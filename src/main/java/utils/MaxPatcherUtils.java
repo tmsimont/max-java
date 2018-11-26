@@ -51,25 +51,23 @@ public class MaxPatcherUtils {
             String type,
             int x,
             int y,
-            int height,
-            int width) {
-        MaxBox box = patcher.newDefault(
+            int width,
+            int height) {
+        return patcher.newDefault(
                 x,
                 y,
                 type,
-                getPresentationArgs(x, y, height, width));
-        box.hide();
-        return box;
+                getPresentationArgs(x, y, width, height));
     }
 
-    public static Atom[] getPresentationArgs(int x, int y, int height, int width) {
+    public static Atom[] getPresentationArgs(int x, int y, int width, int height) {
         return new Atom[]{
                 Atom.newAtom("@presentation"),
                 Atom.newAtom(1),
                 Atom.newAtom("@presentation_rect"),
                 Atom.newAtom(x),
                 Atom.newAtom(y),
-                Atom.newAtom(height),
-                Atom.newAtom(width)};
+                Atom.newAtom(x + width),
+                Atom.newAtom(y + height)};
     }
 }

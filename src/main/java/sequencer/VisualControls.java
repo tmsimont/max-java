@@ -32,7 +32,7 @@ class VisualControls {
                     "comment",
                     args.x + (16 * args.beats),
                     (args.y) + (16 * i),
-                    16,
+                    30,
                     16));
             yLabels.get(i).send("set", new Atom[]{Atom.newAtom(""+i)});
         }
@@ -45,10 +45,20 @@ class VisualControls {
                     "comment",
                     args.x  + (16 * i),
                     (args.y) + (16 * args.voices),
-                    16,
+                    30,
                     16));
             xLabels.get(i).send("set", new Atom[]{Atom.newAtom(""+(i+1))});
         }
+
+        // Label the send/recv names
+        MaxBox label = MaxPatcherUtils.newPresentable(
+                patcher,
+                "comment",
+                args.x,
+                args.y + (16 * (args.voices + 1)),
+                100,
+                16);
+        label.send("set", new Atom[]{Atom.newAtom("s: " + args.sendName + " r: " + args.recvName)});
     }
 
     private MaxBox getMatrixControlBox(
@@ -77,7 +87,7 @@ class VisualControls {
                 Atom.newAtom(MATRIX_NAME));
 
         // Connect
-        patcher.connect(matrixControl, 0, savematrix, 0);
+        patcher.connect(box, 0, savematrix, 0);
 
         // Bang savematrix on copy/paste as well as load
         PasteAndLoadBang.forMaxBox(patcher, savematrix);
