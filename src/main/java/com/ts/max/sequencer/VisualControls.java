@@ -1,17 +1,17 @@
-package sequencer;
+package com.ts.max.sequencer;
 
 import com.cycling74.max.Atom;
 import com.cycling74.max.MaxBox;
 import com.cycling74.max.MaxPatcher;
-import utils.MaxPatcherUtils;
-import utils.PasteAndLoadBang;
+import com.ts.max.utils.MaxPatcherUtils;
+import com.ts.max.utils.PasteAndLoadBang;
 
 import java.util.ArrayList;
 import java.util.List;
 
 class VisualControls {
-    private static final double HEIGHT_PER_BEAT = 16.125;
-    private static final double WIDTH_PER_VOICE = 16.666;
+    static final double HEIGHT_PER_BEAT = 16.125;
+    static final double WIDTH_PER_VOICE = 16.666;
 
     private final MaxBox matrixControl;
     private final List<MaxBox> xLabels;
@@ -26,12 +26,12 @@ class VisualControls {
 
         // Label the y axis
         yLabels = new ArrayList<>();
-        for (int i = 0; i < args.voices; i++) {
+        for (int i = 0; i < args.getNumberOfVoices(); i++) {
             yLabels.add(MaxPatcherUtils.newPresentable(
                     patcher,
                     "comment",
-                    args.x + (16 * args.beats),
-                    (args.y) + (16 * i),
+                    (16 * args.getNumberOfBeats()),
+                    (16 * i),
                     30,
                     16));
             yLabels.get(i).send("set", new Atom[]{Atom.newAtom(""+i)});
@@ -39,12 +39,12 @@ class VisualControls {
 
         // Label the x axis
         xLabels = new ArrayList<>();
-        for (int i = 0; i < args.beats; i++) {
+        for (int i = 0; i < args.getNumberOfBeats(); i++) {
             xLabels.add(MaxPatcherUtils.newPresentable(
                     patcher,
                     "comment",
-                    args.x  + (16 * i),
-                    (args.y) + (16 * args.voices),
+                    (16 * i),
+                    (16 * args.getNumberOfVoices()),
                     30,
                     16));
             xLabels.get(i).send("set", new Atom[]{Atom.newAtom(""+(i+1))});
@@ -54,11 +54,11 @@ class VisualControls {
         MaxBox label = MaxPatcherUtils.newPresentable(
                 patcher,
                 "comment",
-                args.x,
-                args.y + (16 * (args.voices + 1)),
+                0,
+                (16 * (args.getNumberOfVoices() + 1)),
                 100,
                 16);
-        label.send("set", new Atom[]{Atom.newAtom("s: " + args.sendName + " r: " + args.recvName)});
+        label.send("set", new Atom[]{Atom.newAtom("s: " + args.getSendName() + " r: " + args.getRecvName())});
     }
 
     private MaxBox getMatrixControlBox(
@@ -69,12 +69,12 @@ class VisualControls {
         MaxBox box = MaxPatcherUtils.newPresentable(
                 patcher,
                 "matrixctrl",
-                args.x,
-                args.y,
-                (int) (HEIGHT_PER_BEAT * args.beats),
-                (int) (WIDTH_PER_VOICE * args.voices));
-        box.send("rows", new Atom[] {Atom.newAtom(args.voices)});
-        box.send("columns", new Atom[] {Atom.newAtom(args.beats)});
+                0,
+                0,
+                (int) (HEIGHT_PER_BEAT * args.getNumberOfBeats()),
+                (int) (WIDTH_PER_VOICE * args.getNumberOfVoices()));
+        box.send("rows", new Atom[] {Atom.newAtom(args.getNumberOfVoices())});
+        box.send("columns", new Atom[] {Atom.newAtom(args.getNumberOfBeats())});
         box.send("scale", new Atom[] {Atom.newAtom(false)});
         box.send("autosize", new Atom[] {Atom.newAtom(true)});
         box.setName(MATRIX_NAME);

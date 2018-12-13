@@ -1,4 +1,4 @@
-package utils;
+package com.ts.max.utils;
 
 import com.cycling74.max.Atom;
 import com.cycling74.max.MaxBox;

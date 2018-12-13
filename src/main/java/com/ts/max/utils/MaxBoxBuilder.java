@@ -1,4 +1,4 @@
-package utils;
+package com.ts.max.utils;
 
 import com.cycling74.max.Atom;
 import com.cycling74.max.MaxBox;
@@ -16,7 +16,7 @@ public abstract class MaxBoxBuilder extends MaxObject {
     public MaxBoxBuilder(Atom[] args) {
         boxes = build(args);
         cl = new MaxClock(this, "cleanup");
-        cl.delay(1.);
+        cl.delay(500.);
     }
 
     public abstract MaxBox[] build(Atom[] args);
@@ -35,7 +35,25 @@ public abstract class MaxBoxBuilder extends MaxObject {
                     updatedRect[3]);
             y = updatedRect[3];
         }
-        this.getMaxBox().remove();
+        // this causes max to crash?
+        // this.getMaxBox().remove();
+        // this.getMaxBox().send("yo wat up", new Atom[]{});
+        killer = MaxPatcherUtils.newDefault(
+                this.getParentPatcher(),
+                0,
+                0,
+                "message",
+                Atom.newAtom("killbuilder")
+        );
+        this.getParentPatcher().connect(killer, 0, this.getMaxBox(), 0);
+    }
+
+    private MaxBox killer;
+
+    public void anything(String message, Atom[] args) {
+        if (message.equals("killbuilder")) {
+            this.getMaxBox().remove();
+        }
     }
 
     public void notifyDeleted() {

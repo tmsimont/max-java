@@ -1,9 +1,9 @@
-package sequencer;
+package com.ts.max.sequencer;
 
 import com.cycling74.max.Atom;
 import com.cycling74.max.MaxBox;
 import com.cycling74.max.MaxPatcher;
-import utils.MaxPatcherUtils;
+import com.ts.max.utils.MaxPatcherUtils;
 
 class CountDriver {
     private final MaxBox counter;
@@ -20,12 +20,12 @@ class CountDriver {
                 patcher,
                 "counter",
                 Atom.newAtom(1),
-                Atom.newAtom(args.beats));
+                Atom.newAtom(args.getNumberOfBeats()));
 
         // Inlet for receiving bangs via patchcord.
         inBang = MaxPatcherUtils.newHidden(patcher, "inlet");
         inBang.send("comment", new Atom[]{
-                Atom.newAtom("Bang to advance sequence 1 step.")
+                Atom.newAtom("Bang ("+args.getRecvName()+") to advance sequence 1 step.")
         });
         patcher.connect(inBang, 0, counter, 0);
 
@@ -33,7 +33,7 @@ class CountDriver {
         inRecv = MaxPatcherUtils.newHidden(
                 patcher,
                 "r",
-                Atom.newAtom(args.recvName));
+                Atom.newAtom(args.getRecvName()));
         patcher.connect(inRecv, 0, counter, 0);
 
         // Message we can send to our counter to rewind it.
@@ -45,7 +45,7 @@ class CountDriver {
         inRewind = patcher.newDefault(20, 0, "inlet", new Atom[]{});
         inRewind.hide();
         inRewind.send("comment", new Atom[]{
-                Atom.newAtom("Bang to reset to beginning of sequence.")
+                Atom.newAtom("Bang ("+args.getRecvName()+"-R) to reset to beginning of sequence.")
         });
         patcher.connect(inRewind, 0, rewindMessage, 0);
 
@@ -53,7 +53,7 @@ class CountDriver {
         inRecvR = MaxPatcherUtils.newHidden(
                 patcher,
                 "r",
-                Atom.newAtom(args.recvName + "-R"));
+                Atom.newAtom(args.getRecvName() + "-R"));
         patcher.connect(inRecvR, 0, rewindMessage, 0);
     }
 

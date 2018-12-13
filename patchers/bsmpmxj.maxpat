@@ -10,7 +10,7 @@
 		}
 ,
 		"classnamespace" : "box",
-		"rect" : [ 59.0, 104.0, 640.0, 480.0 ],
+		"rect" : [ 223.0, 202.0, 325.0, 480.0 ],
 		"bglocked" : 0,
 		"openinpresentation" : 1,
 		"default_fontsize" : 12.0,
@@ -39,20 +39,26 @@
 		"subpatcher_template" : "",
 		"boxes" : [ 			{
 				"box" : 				{
-					"hidden" : 1,
 					"id" : "obj-1",
 					"maxclass" : "newobj",
 					"numinlets" : 1,
 					"numoutlets" : 2,
 					"outlettype" : [ "", "" ],
-					"patching_rect" : [ 36.0, 52.0, 166.0, 22.0 ],
-					"text" : "mxj com.ts.max.sequencer.SequencerMxj",
-					"varname" : "seqmxj"
+					"patching_rect" : [ 26.0, 58.0, 219.0, 22.0 ],
+					"text" : "mxj com.ts.max.bsmp.BangSamplerMxj",
+					"varname" : "bsmpmxj"
 				}
 
 			}
  ],
 		"lines" : [  ],
+		"parameters" : 		{
+			"parameterbanks" : 			{
+
+			}
+
+		}
+,
 		"dependency_cache" : [  ],
 		"autosave" : 0
 	}
