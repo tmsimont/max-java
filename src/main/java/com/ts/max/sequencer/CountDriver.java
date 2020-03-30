@@ -37,9 +37,13 @@ class CountDriver {
         patcher.connect(inRecv, 0, counter, 0);
 
         // Message we can send to our counter to rewind it.
+        // Build a message object.
         rewindMessage = MaxPatcherUtils.newHidden(patcher, "message");
-        rewindMessage.send("set", new Atom[]{ Atom.newAtom(1)});
-        patcher.connect(rewindMessage, 0, counter, 0);
+        // Set the message to "0"
+        rewindMessage.send("set", new Atom[]{ Atom.newAtom(0)});
+        // Connect the "0" message to our counter at inlet 3, which is the "set immediately to this value" inlet.
+        // This will set the counter to "0" when we bang on rewindMessage.
+        patcher.connect(rewindMessage, 0, counter, 3);
 
         // Inlet to receive bangs and hit our rewind message
         inRewind = patcher.newDefault(20, 0, "inlet", new Atom[]{});
